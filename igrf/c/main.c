@@ -44,3 +44,5 @@ int main()
     return 0;
 }
 
+// Compile: gcc -std=c99 main.c
+// Run: ./a.exe
