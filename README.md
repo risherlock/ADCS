@@ -1,5 +1,10 @@
-# ADCS-In-Orbit-Models  
-### (Work in Progress!)
-Implementations of some important mathematical models for ADCS of satellites.
+# ADCS
+Implementations of mathematical models, control algorithms, and simulators for ADCS (Attitude Determination and Control System) of spacecrafts. 
 
-#### Note: Orbit propagators are maintained in [Satellite-Orbit](https://github.com/risherlock/Satellite-Orbit) repository.
+#### Folder structure
+1. [in_orbit_models](https://github.com/risherlock/ADCS/tree/main/in_orbit_models) - Important mathematical models for ADCS of satellites.
+2. [attitude_control](https://github.com/risherlock/ADCS/tree/main/attitude_control) - Simulations of different detumbling and fine attitude control laws.
+
+#### Other repositories on software for ADCS
+1. [Attitude-Estimation](https://github.com/risherlock/Attitude-Estimation) - Implementations of different attitude estimation algorithms for spacecrafts. 
+2. [Satellite-Orbit](https://github.com/risherlock/Satellite-Orbit) - Orbit propagation using various methods.
