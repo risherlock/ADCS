@@ -10,7 +10,6 @@ Note:
     Variable names used in this code follows reference [2].
 
     Rishav (2021/12/26)
-    ORION Space, Nepal
 */
 
 #ifndef _IGRF_H_
