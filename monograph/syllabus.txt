@@ -1,0 +1,35 @@
+1. Attitude Determination
+=========================
+a. Problem statement
+c. Frame of references
+d. Reference frames in ADCS
+e. Attitude parameterization
+f. Attitude determination
+g. Attitude estimation
+
+2. In-orbit Models
+==================
+a. Revisiting attitude determination
+b. Time
+c. TLE
+d. Orbit propagation
+e. Sun vector model
+f. Magnetic field model
+g. Complete attitude determination architecture
+
+3. Attitude Control
+===================
+a. Problem statement
+b. Error attitude
+c. ADCS architecture
+d. Control system design
+e. Different control missions
+
+4. ADCS simulation
+==================
+a. Differential equations
+b. Simple pendulum
+e. Lorenz attractor
+f. Kinetics and kinematics of rigid body
+g. Simulation of ADCS
+
