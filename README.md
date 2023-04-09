@@ -4,6 +4,7 @@ Implementations of mathematical models, control algorithms, and simulators for A
 #### Folder structure
 1. [in_orbit_models](https://github.com/risherlock/ADCS/tree/main/in_orbit_models) - Important mathematical models for ADCS of satellites.
 2. [attitude_control](https://github.com/risherlock/ADCS/tree/main/attitude_control) - Simulations of different detumbling and fine attitude control laws.
+3. [memoir](https://github.com/risherlock/ADCS/tree/main/memoir) - An attempt to document my exposition on ADCS.
 
 #### Other projects on software for ADCS
 1. [Attitude-Estimation](https://github.com/risherlock/Attitude-Estimation) - Implementations of different attitude estimation algorithms for spacecrafts. 
