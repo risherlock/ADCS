@@ -4,13 +4,14 @@
 </p>
 
 <h2>Syllabus</h2>
-<ol>
+<ol start="0">
   <li>Orientation and course intro</li>
     <ol type="i">
       <li>What is ADCS?</li>
-      <li>Multi-disciplinary</li>
-      <li>ADCS for research</li>
-      <li>Goal of this course?</li>
+      <li>Challenges</li>
+      <li>Opportunities</li>
+      <li>Goal of this series</li>
+      <li>Syllabus</li>
     </ol>
   
   <li>Preliminaries of ADCS</li>
@@ -64,7 +65,7 @@
       <li>Detumbling simulation</li>
       <li>Assignment: Attitude control simulation</li>
     </ol>
-  <li>Discussions and conclusions</li>
+  <li>Discussions and conclusion</li>
 </ol>
 
 
