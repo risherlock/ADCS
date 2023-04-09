@@ -1,11 +1,19 @@
-# ADCS
-Implementations of mathematical models, control algorithms, and simulators for ADCS (Attitude Determination and Control System) of spacecrafts. 
+<h1>ADCS</h1>
+<p>
+  Implementations of mathematical models, control algorithms, and simulators for ADCS (Attitude Determination and Control System) of spacecrafts.
+</P>
 
-#### Folder structure
-1. [in_orbit_models](https://github.com/risherlock/ADCS/tree/main/in_orbit_models) - Important mathematical models for ADCS of satellites.
-2. [attitude_control](https://github.com/risherlock/ADCS/tree/main/attitude_control) - Simulations of different detumbling and fine attitude control laws.
-3. [memoir](https://github.com/risherlock/ADCS/tree/main/memoir) - An attempt to document my exposition on ADCS.
+<h2>Folder structure</h2>
+<ol>
+  <li><a href="codes/onboard_models">onboard_models: </a>Mathematical models for on-board satellite computer</li>
+  <!-- <li><a href="codes/attitude_control">attitude_control: </a>Simulations of attitude control algorithms</li> -->
+  <!-- <li><a href="codes/hwil">hwil: </a>Hardware-in-the-loop simulator for ADCS</li> -->
+  <li><a href="docs/monograph">monograph: </a>An attempt to document my exposition on ADCS</li>
+  <li><a href="docs/lecture_series">lecture_series: </a>Slides and documents for ADCS lecture series (April 2023 - )</li>
+</ol>
 
-#### Other projects on software for ADCS
-1. [Attitude-Estimation](https://github.com/risherlock/Attitude-Estimation) - Implementations of different attitude estimation algorithms for spacecrafts. 
-2. [Satellite-Orbit](https://github.com/risherlock/Satellite-Orbit) - Orbit propagation using various methods.
+<h2>Related projects</h2>
+<ol>
+  <li><a href="https://github.com/risherlock/Attitude-Estimation">Attitude-Estimation: </a>Implementations of different attitude estimation algorithms for spacecrafts</li>
+  <li><a href="https://github.com/risherlock/Satellite-Orbit">Satellite-Orbit: </a>Various orbit propagators</li>
+</ol>

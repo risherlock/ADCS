@@ -71,5 +71,5 @@
 <h2>Folder structure</h2>
 <ol>
   <li><a href="slides">sildes :</a> Presentation slides to each of the lectures.</li>
-  <li><a href="slides">codes :</a> Code snippets and software presentation in the lectures.</li>
+  <li><a href="slides">codes :</a> Code snippets and software presented in the lectures.</li>
 </ol>
