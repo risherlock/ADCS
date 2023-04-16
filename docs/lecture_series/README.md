@@ -1,7 +1,13 @@
 <h1>Lecture Series</h1>
 <p style="font-size: large">
-  Slides, software, and study materials for the lecture series titled <i>Foundations of Attitude Determination and Control System</i>.
+  Slides, software, and study materials for the lecture series titled <i>Foundations of Attitude Determination and Control System</i>. Please visit <a href="https://discord.gg/4Nc6yjdw">discord server</a> for updates.
 </p>
+
+<h2>Folder structure</h2>
+<ol>
+  <li><a href="slides">sildes :</a> Presentation slides to each of the lectures.</li>
+  <li><a href="slides">codes :</a> Code snippets and software presented in the lectures.</li>
+</ol>
 
 <h2>Syllabus</h2>
 <ol start="0">
@@ -66,11 +72,4 @@
       <li>Assignment: Attitude control simulation</li>
     </ol>
   <li>Discussions and conclusion</li>
-</ol>
-
-
-<h2>Folder structure</h2>
-<ol>
-  <li><a href="slides">sildes :</a> Presentation slides to each of the lectures.</li>
-  <li><a href="slides">codes :</a> Code snippets and software presented in the lectures.</li>
 </ol>
