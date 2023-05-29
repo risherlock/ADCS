@@ -71,5 +71,4 @@
       <li>Detumbling simulation</li>
       <li>Assignment: Attitude control simulation</li>
     </ol>
-  <li>Discussions and conclusion</li>
 </ol>
