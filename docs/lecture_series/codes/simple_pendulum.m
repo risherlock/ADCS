@@ -45,7 +45,7 @@ grid on;
 %%%%%%%%%%%%%
 
 % Simple pendulum differential equation
-function [state_dot] = pendulum(state, L, d, g, m)
+function [state_dot] = f(state, L, d, g, m)
     theta = state(1);
     theta_dot = state(2);
     

@@ -1,4 +1,4 @@
-% Numerical simulation of simple pendulum
+% Numerical simulation of satellite detumbling
 % Rishav (2023-05-28)
 
 clc

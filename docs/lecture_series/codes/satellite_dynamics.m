@@ -1,4 +1,4 @@
-% Numerical simulation of simple pendulum
+% Numerical simulation of satellite dynamics
 % Rishav (2023-05-28)
 
 clc
