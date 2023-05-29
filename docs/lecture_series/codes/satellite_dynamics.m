@@ -16,7 +16,7 @@ I = diag([0.05, 0.05, 0.05]); % MOI
 tau = 0;                      % External torque
 
 % Initial conditions
-q0 = [1, 0, 0, 0]';    % Attitude
+q0 = [1, 0, 0, 0]';    % [q0, q1, q2, q3]
 w0 = [0.2, 0.3, 0.4]'; % Rate, rad/s
 
 % Memory allocations
