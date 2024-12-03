@@ -1,50 +1,52 @@
 // Basic implementation of 'igrf.h'
-// Rishav (2021/12/27)
+// Rishav (2021-12-27)
 
 #include <stdio.h>
-#include <inttypes.h>
 #include "igrf.h"
 
-float latitude = 28.3949;
-float longitude = 84.1240;
-float radius = 6371.2 + 1000;
-
-uint16_t year = 2021;
-uint8_t month = 12;
-uint8_t day = 29;
-uint8_t hour = 10;
-uint8_t min = 14;
-uint8_t sec = 45;
+#define R2D 57.2957795131
+#define D2R 0.01745329251
 
 int main()
 {
+  // Time
+  date_time dt;
+  dt.year = 2023;
+  dt.month = 12;
+  dt.day = 17;
+  dt.hour = 0;
+  dt.minute = 0;
+  dt.second = 0;
 
-    igrf_set_date_time(year, month, day, hour, min, sec);
-    igrf_update(latitude * PI / 180.0f, longitude * PI / 180.0f, radius, 1);
+  // 221B Baker Street
+  const float latitude = 51.5238; // deg
+  const float longitude = -0.1586; // deg
+  const float height = 1000.0; // km
+  const float x_sph[3] = {latitude, longitude, height};
 
-    // Results
-    // Validation: http: // www.geomag.bgs.ac.uk/data_service/models_compass/igrf_calc.html
-    printf("\r\n~~~ Inputs ~~~\r\n");
-    printf("Latitude: %f degrees\r\n", latitude);
-    printf("Longitude: %f degrees\r\n", longitude);
-    printf("Altitude: %f km\r\n", radius);
-    printf("YYMMDD: %u/%u/%u\r\n", year, month, day);
-    printf("HHMMSS: %u/%u/%u\r\n\r\n", hour, min, sec);
+  // Magnetic field in NED frame
+  float b_ned[3] = {0.0};
 
-    printf("~~~ Outputs ~~~\r\n", latitude);
-    printf("North (X): %f nT\r\n", B_ned[0]);
-    printf("East (Y): %f  nT\r\n", B_ned[1]);
-    printf("Down (Z): %f  nT\r\n\r\n", B_ned[2]);
+  // Compute and print
+  if(igrf(dt, x_sph, b_ned))
+  {
+    printf("Inputs:\n");
+    printf("  Date: %d-%d-%d, %d:%d:%d\n", dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second);
+    printf("  Latitude: %f deg\n", latitude);
+    printf("  Longitude: %f deg\n", longitude);
+    printf("  Height: %f km\n", height);
+    printf("\nOutputs:\n");
+    printf("  Bn: %f nT\n", b_ned[0]);
+    printf("  Be: %f nT\n", b_ned[1]);
+    printf("  Bd: %f nT\n", b_ned[2]);
+    printf("  Magnitude: %f nT\n", igrf_get_norm(b_ned));
+    printf("  Inclination: %f deg\n", igrf_get_inclination(b_ned) * R2D);
+    printf("  Declination: %f deg\n", igrf_get_declination(b_ned) * R2D);
+  }
+  else
+  {
+    printf("Date error!\n");
+  }
 
-    printf("Magnitude(F): %f nT\r\n", igrf_get_norm());
-    printf("Horizontal intensity(H): %f  nT\r\n", igrf_get_horizontal_intensity());
-    printf("Declination(D): %f  degrees\r\n", igrf_get_declination() * 180.0 / PI);
-    printf("Inclination (I): %f  degrees\r\n\r\n", igrf_get_inclination() * 180.0 / PI);
-
-    return 0;
+  return 0;
 }
-
-/*
-    Compile: gcc -std=c99 main.c
-    Run: ./a.exe
-*/
