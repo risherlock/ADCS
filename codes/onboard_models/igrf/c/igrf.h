@@ -17,7 +17,7 @@
 extern "C" {
 #endif
 
-#include "igrf13.h"
+#include "igrf2020.h"
 
 #include <math.h>
 #include <inttypes.h>
