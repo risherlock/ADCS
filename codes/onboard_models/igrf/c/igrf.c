@@ -57,15 +57,16 @@ float get_years(const date_time dt)
 #include <stdio.h>
 
 /**
- * @brief Computes magnetic field strength [nT] in geocentric NED coordinates.
+ * @brief Computes magnetic field strength [nT] NED frame.
  *
  * @param dt Date and time.
  * @param x_sph[3] {latitude [deg], longitude [deg], surface height [km]} in geocentric coordinates.
- * @param b_ned[3] Output NED magnetic field intensity (nT) in geocentric coordinates.
+ * @param b_ned[3] Output magnetic field intensity (nT).
  * @return 0 if date is out of range, 1 otherwise.
  *
- * @note Please use igrf_enable_geodetic_input() and igrf_enable_geodetic_output() if you want to
- * work with inputs and outputs in geodetic coordinates, respectively.
+ * @note Please use igrf_enable_geodetic_input() and igrf_enable_geodetic_output() if you
+ * want to work with inputs and outputs in geodetic coordinates, respectively. By default,
+ * igrf() assumes the input (x_sph) and output (b_ned) are in geocentric coordinates.
  */
 uint8_t igrf(const date_time dt, const float x_sph[3], float b_ned[3])
 {
