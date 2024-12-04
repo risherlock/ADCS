@@ -27,6 +27,9 @@ int main()
   // Magnetic field in NED frame
   float b_ned[3] = {0.0};
 
+  igrf_geodetic_input();
+  igrf_geodetic_output();
+
   // Compute and print
   if(igrf(dt, x_sph, b_ned))
   {

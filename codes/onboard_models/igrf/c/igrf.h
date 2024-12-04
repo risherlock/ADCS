@@ -37,6 +37,10 @@ float igrf_get_inclination(const float b_ned[3]);
 float igrf_get_declination(const float b_ned[3]);
 float igrf_get_norm(const float b_ned[3]);
 
+void igrf_reset(void);
+void igrf_geodetic_input(void);
+void igrf_geodetic_output(void);
+
 #ifdef __cplusplus
 }
 #endif

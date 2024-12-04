@@ -5,6 +5,9 @@
 #define R2D 57.2957795131
 #define D2R 0.01745329251
 
+static uint8_t input_geodetic_flag = 0;
+static uint8_t output_geodetic_flag = 0;
+
 // WGS84 params
 static const double wgs84_f = 1 / 298.257223563;
 static const double wgs84_a = 6378.137;
@@ -51,22 +54,19 @@ float get_years(const date_time dt)
   return years + days / total_days + hours / (24.0f * days);
 }
 
-/*
-  Computes magnetic field strength [nT] in NED coordinates.
-
-Inputs:
-  dt = YYYY-MM-DD HH:MM:SS
-  x_sph[3] = {geodetic latitude [deg], longitude [deg], surface height [km]}
-
-Output:
-  b_ned[3] = {bn, be, bd}, nT
-
-Outline:
-  1. Recursively calculate Legendre polynostatic const double wgs84_e2 = 6.69437999014e-3;
-mials and its derivatives.
-  2. Compute magnetic field strength using terms computed in 1.
-*/
 #include <stdio.h>
+
+/**
+ * @brief Computes magnetic field strength [nT] in geocentric NED coordinates.
+ *
+ * @param dt Date and time.
+ * @param x_sph[3] {latitude [deg], longitude [deg], surface height [km]} in geocentric coordinates.
+ * @param b_ned[3] Output NED magnetic field intensity (nT) in geocentric coordinates.
+ * @return 0 if date is out of range, 1 otherwise.
+ *
+ * @note Please use igrf_enable_geodetic_input() and igrf_enable_geodetic_output() if you want to
+ * work with inputs and outputs in geodetic coordinates, respectively.
+ */
 uint8_t igrf(const date_time dt, const float x_sph[3], float b_ned[3])
 {
   const float a = 6371.2; // Radius of Earth, km
@@ -74,19 +74,26 @@ uint8_t igrf(const date_time dt, const float x_sph[3], float b_ned[3])
   const float phi = x_sph[1] * D2R;
   const float h = x_sph[2];
 
-  double ct, st;
+  double ct, st, r;
   ct = cos(theta);
   st = sin(theta);
 
   // Geodetic to geocentric coordinates
-  const double rho = hypot(wgs84_a * st, wgs84_b * ct);
-  const double r = sqrt(h * h + 2 * h * rho + (pow(wgs84_a, 4) * st * st + pow(wgs84_b, 4) * ct * ct) / (rho * rho));
-  const double cd = (h + rho) / r;
-  const double sd = (wgs84_a * wgs84_a - wgs84_b * wgs84_b) / rho * ct * st / r;
+  if(input_geodetic_flag)
+  {
+    const double rho = hypot(wgs84_a * st, wgs84_b * ct);
+    r = sqrt(h * h + 2 * h * rho + (pow(wgs84_a, 4) * st * st + pow(wgs84_b, 4) * ct * ct) / (rho * rho));
+    const double cd = (h + rho) / r;
+    const double sd = (wgs84_a * wgs84_a - wgs84_b * wgs84_b) / rho * ct * st / r;
 
-  float temp_ct = ct;
-  ct = ct * cd - st * sd;
-  st = st * cd + temp_ct * sd;
+    float temp_ct = ct;
+    ct = ct * cd - st * sd;
+    st = st * cd + temp_ct * sd;
+  }
+  else
+  {
+    r = a + h;
+  }
 
   // Avoid singularity
   float epsilon = 1e-8;
@@ -140,6 +147,7 @@ uint8_t igrf(const date_time dt, const float x_sph[3], float b_ned[3])
   dp11 = 0;
   dp10 = 0;
 
+  // Recursively calculate Legendre polynomials and its derivatives.
   int k = 0;
   for (uint8_t m = 0; m <= IGRF_DEGREE; m++)
   {
@@ -183,6 +191,7 @@ uint8_t igrf(const date_time dt, const float x_sph[3], float b_ned[3])
         float gsin = g * sines[m];
         float gcos = g * cosines[m];
 
+        // Compute magnetic field strength
         br += ar_pow[n - 1] * (n + 1) * ((gcos + hsin) * pnm);
         bt += ar_pow[n - 1] * ((gcos + hsin) * dpnm);
         bp += ar_pow[n - 1] * (m * (-gsin + hcos) * pnm);
@@ -195,28 +204,31 @@ uint8_t igrf(const date_time dt, const float x_sph[3], float b_ned[3])
   b_ned[1] = -bp / st;
   b_ned[2] = -br;
 
-  // Geocentric to geodetic coordinates
-  const double GCLAT = (PI_2 - theta);
-  const double SCL = sin(GCLAT);
-  const double RI = a / r;
-  const double A2 = RI * (A21 + RI * (A22 + RI * A23));
-  const double A4 = RI * (A41 + RI * (A42 + RI * (A43 + RI * A44)));
-  const double A6 = RI * (A61 + RI * (A62 + RI * A63));
-  const double A8 = RI * (A81 + RI * (A82 + RI * (A83 + RI * A84)));
-  const double CCL = sqrt(1 - SCL * SCL);
-  const double S2CL = 2.0f * SCL * CCL;
-  const double C2CL = 2.0f * CCL * CCL - 1.;
-  const double S4CL = 2.0f * S2CL * C2CL;
-  const double C4CL = 2.0f * C2CL * C2CL - 1.;
-  const double S8CL = 2.0f * S4CL * C4CL;
-  const double S6CL = S2CL * C4CL + C2CL * S4CL;
-  const double DLTCL = S2CL * A2 + S4CL * A4 + S6CL * A6 + S8CL * A8;
-  const double theta_gd = DLTCL + GCLAT;
-  const double psi = sin(theta_gd) * sin(theta) - cos(theta_gd) * cos(theta);
+  if(output_geodetic_flag)
+  {
+    // Geocentric to geodetic coordinates
+    const double GCLAT = (PI_2 - theta);
+    const double SCL = sin(GCLAT);
+    const double RI = a / r;
+    const double A2 = RI * (A21 + RI * (A22 + RI * A23));
+    const double A4 = RI * (A41 + RI * (A42 + RI * (A43 + RI * A44)));
+    const double A6 = RI * (A61 + RI * (A62 + RI * A63));
+    const double A8 = RI * (A81 + RI * (A82 + RI * (A83 + RI * A84)));
+    const double CCL = sqrt(1 - SCL * SCL);
+    const double S2CL = 2.0f * SCL * CCL;
+    const double C2CL = 2.0f * CCL * CCL - 1.;
+    const double S4CL = 2.0f * S2CL * C2CL;
+    const double C4CL = 2.0f * C2CL * C2CL - 1.;
+    const double S8CL = 2.0f * S4CL * C4CL;
+    const double S6CL = S2CL * C4CL + C2CL * S4CL;
+    const double DLTCL = S2CL * A2 + S4CL * A4 + S6CL * A6 + S8CL * A8;
+    const double theta_gd = DLTCL + GCLAT;
+    const double psi = sin(theta_gd) * sin(theta) - cos(theta_gd) * cos(theta);
 
-  // Geodetic NED
-  b_ned[0] = cos(psi) * bt - sin(psi) * br;
-  b_ned[2] = -(sin(psi) * bt + cos(psi) * br);
+    // Geodetic NED
+    b_ned[0] = cos(psi) * bt - sin(psi) * br;
+    b_ned[2] = -(sin(psi) * bt + cos(psi) * br);
+  }
 
   return 1;
 }
@@ -238,4 +250,23 @@ float igrf_get_declination(const float b_ned[3])
 float igrf_get_norm(const float b_ned[3])
 {
   return sqrt(b_ned[0] * b_ned[0] + b_ned[1] * b_ned[1] + b_ned[2] * b_ned[2]);
+}
+
+// Input x_sph[3] in geodetic coordinates.
+void igrf_geodetic_input(void)
+{
+  input_geodetic_flag = 1;
+}
+
+// Output b_ned in geodetic coordinates.
+void igrf_geodetic_output(void)
+{
+  output_geodetic_flag = 1;
+}
+
+// Geocentric intput and output.
+void igrf_reset(void)
+{
+  input_geodetic_flag = 0;
+  output_geodetic_flag = 0;
 }
